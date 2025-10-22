@@ -9,7 +9,6 @@ const loginBodySchema = z.object({
 });
 
 export const endpoint = new Endpoint("post", "/v1/login").withBody(loginBodySchema).onCall(async (req, res) => {
-    // // Handle Login
     const { username, password } = req.body as z.infer<typeof loginBodySchema>;
 
     // Find User
