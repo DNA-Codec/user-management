@@ -1,5 +1,5 @@
 import z from "zod";
-import { Endpoint } from "./common";
+import { Endpoint } from "../package";
 import { userModel } from "../../mongo/models/user";
 import bcrypt from "bcrypt";
 
