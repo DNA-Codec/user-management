@@ -1,3 +1,3 @@
 import "./health";
-import "./upload";
-import "./decode";
+import "./login";
+import "./register";
