@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Model, Schema, model } from 'mongoose';
 import { getDbUUID } from '../uuid';
 
 export interface User {
@@ -17,8 +17,8 @@ const userSchema = new Schema<User>({
         unique: true,
     },
 
-    username: String,
-    passwordHash: String,
+    username: { type: String, unique: true },
+    passwordHash: { type: String },
 });
 
-export const userModel = model('User', userSchema);
+export const userModel = model<User>('User', userSchema);

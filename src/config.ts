@@ -2,12 +2,12 @@ export const CONFIG = {
     /** Configuration relating to the server */
     server: {
         /** The port for the server to run on */
-        port: 3000,
+        port: process.env.PORT ? parseInt(process.env.PORT) : 3000,
     },
     /** Configuration relating to logging */
     logger: {
         /** The logging level to use */
-        level: "info",
+        level: process.env.LOG_LEVEL ||  "info",
     },
     /** Configuration relating to JWT */
     jwt: {
