@@ -1,7 +1,7 @@
-import z from "zod";
-import { Endpoint } from "../package";
-import { userModel } from "../../mongo/models/user";
 import bcrypt from "bcrypt";
+import z from "zod";
+import { userModel } from "../../mongo/models/user";
+import { Endpoint } from "../package";
 
 const registerBodySchema = z.object({
     username: z.string().min(3, "Username must be at least 3 characters").max(20, "Username must not exceed 20 characters"),
@@ -17,24 +17,8 @@ async function userExists(username: string) {
     }
 }
 
-export const endpoint = new Endpoint("post", "/v1/register", async (req, res) => {
-    // Validate Body
-    const parseResult = registerBodySchema.safeParse(req.body);
-    if (!parseResult.success) {
-        const formattedErrors = parseResult.error.issues.map(issue => ({
-            field: issue.path.join("."),
-            message: issue.message
-        }));
-
-        return res.status(400).json({
-            error: "Validation failed",
-            message: "The request body contains invalid fields",
-            details: formattedErrors
-        });
-    }
-
-    // // Handle Registration
-    const { username, password } = parseResult.data;
+export const endpoint = new Endpoint("post", "/v1/register").withBody(registerBodySchema).onCall(async (req, res) => {
+    const { username, password } = req.body as z.infer<typeof registerBodySchema>;
 
     // Check if user already exists
     try {

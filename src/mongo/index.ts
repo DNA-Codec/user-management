@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 import { BootLoader } from "../boot";
+import { getLogger } from "../util/logger";
+
+const logger = getLogger("MONGO");
 
 new BootLoader(async () => {
     try {
@@ -9,7 +12,7 @@ new BootLoader(async () => {
         await mongoose.connect(mongoUri);
         return true;
     } catch (error) {
-        console.error("Failed to connect to MongoDB:", error);
+        logger.error("Failed to connect to MongoDB:", error);
         return false;
     }
 })
