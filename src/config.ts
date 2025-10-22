@@ -18,8 +18,6 @@ export const CONFIG = {
     },
     /** Configuration relating to environment */
     env: {
-        /** Whether this service's API proxy is enabled (will send edge actions to the API like setting cookies) */
-        apiProxyEnabled: process.env.API_PROXY_ENABLED === "true" || process.env.API_PROXY_ENABLED === "1" || false,
         /** Whether the environment is production */
         production: process.env.NODE_ENV === "production" || false,
     }

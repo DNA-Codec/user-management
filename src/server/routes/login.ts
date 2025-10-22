@@ -31,15 +31,7 @@ export const endpoint = new Endpoint("post", "/v1/login").withBody(loginBodySche
 
         // Sign Token
         const token = jwt.sign({ id: user.id }, CONFIG.jwt.secret, { expiresIn: CONFIG.jwt.expiresIn as any });
-
-        // Set Cookie / Header for Token
-        if (CONFIG.env.apiProxyEnabled) {
-            // When the API proxy is enabled, we'll set a response header to inform the proxy to set the cookie for us
-            res.header("PROXY-SET-COOKIES", JSON.stringify({ token }));
-        } else {
-            // Otherwise we set the cookie ourselves
-            setSecureCookie(res.cookie, "token", token);
-        }
+        setSecureCookie(res.cookie, "token", token);
 
         // Successful Login
         return res.status(200).json({
