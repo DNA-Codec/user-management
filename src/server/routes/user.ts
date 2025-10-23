@@ -28,5 +28,5 @@ export const endpoint = new Endpoint("get", "/v1/me", async (req, res) => {
     const userObj = user.toObject();
     const { passwordHash, ...userWithoutPassword } = userObj;
 
-    res.json({ user: userWithoutPassword });
+    res.json({ success: true, user: userWithoutPassword });
 });

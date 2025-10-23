@@ -2,7 +2,8 @@ import { startBootLoaders } from "./boot";
 import { getLogger } from "./util/logger";
 
 // startup locations
-import "./server/index";
+import "./server";
+import "./mongo";
 
 // lifecycle
 const logger = getLogger("ROOT");

@@ -1,10 +1,10 @@
-import z from "zod";
-import { Endpoint } from "../package";
-import { userModel } from "../../mongo/models/user";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import z from "zod";
 import CONFIG from "../../config";
-import { setSecureCookie } from "../util/cookies";
+import { userModel } from "../../mongo/models/user";
+import { Endpoint } from "../package";
+import { getSecureCookieOptions } from "../util/cookies";
 
 const loginBodySchema = z.object({
     username: z.string().min(3, "Username must be at least 3 characters").max(20, "Username must not exceed 20 characters"),
@@ -31,7 +31,7 @@ export const endpoint = new Endpoint("post", "/v1/login").withBody(loginBodySche
 
         // Sign Token
         const token = jwt.sign({ id: user.id }, CONFIG.jwt.secret, { expiresIn: CONFIG.jwt.expiresIn as any });
-        setSecureCookie(res.cookie, "token", token);
+        res.cookie("token", token, getSecureCookieOptions());
 
         // Successful Login
         return res.status(200).json({
@@ -42,6 +42,7 @@ export const endpoint = new Endpoint("post", "/v1/login").withBody(loginBodySche
             },
         });
     } catch (error) {
+        console.error("Error during login:", error);
         return res.status(500).json({
             error: "Internal Server Error",
             message: "An error occurred while retrieving user data",

@@ -8,6 +8,10 @@ const defaultCookieOptions: CookieOptions = {
     expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 1 week
 };
 
+export function getSecureCookieOptions(additionalOptions: CookieOptions = {}): CookieOptions {
+    return { ...defaultCookieOptions, ...additionalOptions };
+}
+
 export function setSecureCookie(cookie: Response["cookie"], cookieName: string, cookieValue: string, additionalOptions: CookieOptions = {}) {
-    cookie(cookieName, cookieValue, { ...defaultCookieOptions, ...additionalOptions });
+    cookie(cookieName, cookieValue, getSecureCookieOptions(additionalOptions));
 };

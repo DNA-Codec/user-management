@@ -7,7 +7,7 @@ export const CONFIG = {
     /** Configuration relating to logging */
     logger: {
         /** The logging level to use */
-        level: process.env.LOG_LEVEL ||  "info",
+        level: process.env.LOG_LEVEL || "info",
     },
     /** Configuration relating to JWT */
     jwt: {
@@ -20,7 +20,12 @@ export const CONFIG = {
     env: {
         /** Whether the environment is production */
         production: process.env.NODE_ENV === "production" || false,
-    }
+    },
+    /** Database configuration */
+    database: {
+        /** The MongoDB connection URI */
+        mongoUri: process.env.MONGO_URI,
+    },
 };
 
 if (CONFIG.jwt.secret === "default_secret_key") {
