@@ -3,10 +3,12 @@ import express from "express";
 import CONFIG from "../config";
 import { BootLoader } from "../boot";
 import { getLogger } from "../util/logger";
+import cookieParser from "cookie-parser";
 
 const logger = getLogger("SERVER");
 export const app = express();
 
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
