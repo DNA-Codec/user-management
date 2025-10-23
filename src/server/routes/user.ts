@@ -3,7 +3,7 @@ import { userModel } from "../../mongo/models/user";
 import { Endpoint } from "../package";
 import jwt from "jsonwebtoken";
 
-export const endpoint = new Endpoint("get", "/me", async (req, res) => {
+export const endpoint = new Endpoint("get", "/v1/me", async (req, res) => {
     const cookies = req.cookies;
     const token = cookies["token"];
 
