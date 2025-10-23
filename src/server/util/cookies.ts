@@ -4,7 +4,7 @@ import CONFIG from "../../config";
 const defaultCookieOptions: CookieOptions = {
     secure: CONFIG.env.production, // HTTPS Only (OFF FOR DEV)
     httpOnly: true, // JS Prevention
-    sameSite: "strict", // CSRF Protection
+    sameSite: CONFIG.env.production ? "strict" : "lax", // CSRF Protection (lax for dev cross-origin)
     expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 1 week
 };
 
