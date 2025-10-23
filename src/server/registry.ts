@@ -4,3 +4,4 @@ import "./routes/health";
 // User Management Routes
 import "./routes/login";
 import "./routes/register";
+import "./routes/user";
