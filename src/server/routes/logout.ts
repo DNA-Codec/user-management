@@ -1,17 +1,10 @@
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import z from "zod";
 import CONFIG from "../../config";
 import { userModel } from "../../mongo/models/user";
 import { Endpoint } from "../package";
 import { getSecureCookieOptions } from "../util/cookies";
 
-const loginBodySchema = z.object({
-    username: z.string().min(3, "Username must be at least 3 characters").max(20, "Username must not exceed 20 characters"),
-    password: z.string().min(6, "Password must be at least 6 characters").max(50, "Password must not exceed 50 characters"),
-});
-
-export const endpoint = new Endpoint("post", "/v1/logout").withBody(loginBodySchema).onCall(async (req, res) => {
+export const endpoint = new Endpoint("post", "/v1/logout", async (req, res) => {
     const cookies = req.cookies;
     const token = cookies["token"];
 
