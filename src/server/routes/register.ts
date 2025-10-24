@@ -28,11 +28,13 @@ export const endpoint = new Endpoint("post", "/v1/register").withBody(registerBo
     // Check if user already exists
     try {
         if (await userExists(username)) return res.status(409).json({
+            success: false,
             error: "User already exists",
             message: `A user with the username '${username}' already exists`
         });
     } catch (error) {
         return res.status(500).json({
+            success: false,
             error: "Internal Server Error",
             message: "An error occurred while checking for existing user",
             details: (error as Error).message || "Unknown Error"
@@ -47,6 +49,7 @@ export const endpoint = new Endpoint("post", "/v1/register").withBody(registerBo
         await newUser.save();
 
         return res.status(201).json({
+            success: true,
             message: "User registered successfully",
             user: {
                 id: newUser.id,
@@ -55,6 +58,7 @@ export const endpoint = new Endpoint("post", "/v1/register").withBody(registerBo
         });
     } catch (error) {
         return res.status(500).json({
+            success: false,
             error: "Internal Server Error",
             message: "An error occurred while registering the user",
             details: (error as Error).message || "Unknown Error"

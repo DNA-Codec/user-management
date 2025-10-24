@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import z from "zod";
+import z, { success } from "zod";
 import CONFIG from "../../config";
 import { userModel } from "../../mongo/models/user";
 import { Endpoint } from "../package";
@@ -18,6 +18,7 @@ export const endpoint = new Endpoint("post", "/v1/login").withBody(loginBodySche
     try {
         const user = await userModel.findOne({ username });
         if (!user) return res.status(401).json({
+            success: false,
             error: "Invalid credentials",
             message: "The provided username or password is incorrect"
         });
@@ -25,6 +26,7 @@ export const endpoint = new Endpoint("post", "/v1/login").withBody(loginBodySche
         // Verify Password
         const passwordMatch = await bcrypt.compare(password, user.passwordHash);
         if (!passwordMatch) return res.status(401).json({
+            success: false,
             error: "Invalid credentials",
             message: "The provided username or password is incorrect"
         });
@@ -35,6 +37,7 @@ export const endpoint = new Endpoint("post", "/v1/login").withBody(loginBodySche
 
         // Successful Login
         return res.status(200).json({
+            success: true,
             message: "Login successful",
             user: {
                 id: user.id,
@@ -44,6 +47,7 @@ export const endpoint = new Endpoint("post", "/v1/login").withBody(loginBodySche
     } catch (error) {
         console.error("Error during login:", error);
         return res.status(500).json({
+            success: false,
             error: "Internal Server Error",
             message: "An error occurred while retrieving user data",
             details: (error as Error).message || "Unknown Error"
