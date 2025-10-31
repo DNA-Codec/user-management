@@ -14,6 +14,8 @@ const loginBodySchema = z.object({
 export const endpoint = new Endpoint("post", "/v1/login").withBody(loginBodySchema).onCall(async (req, res) => {
     const { username, password } = req.body as z.infer<typeof loginBodySchema>;
 
+    console.log(`Login attempt for username: ${username}`);
+
     // Find User
     try {
         const user = await userModel.findOne({ username });
@@ -36,6 +38,7 @@ export const endpoint = new Endpoint("post", "/v1/login").withBody(loginBodySche
         res.cookie("token", token, getSecureCookieOptions());
 
         // Successful Login
+        console.log(`User logged in successfully: ${username}`);
         return res.status(200).json({
             success: true,
             message: "Login successful",
@@ -45,7 +48,7 @@ export const endpoint = new Endpoint("post", "/v1/login").withBody(loginBodySche
             },
         });
     } catch (error) {
-        console.error("Error during login:", error);
+        console.error(`Error occurred during login for user: ${username}`, error);
         return res.status(500).json({
             success: false,
             error: "Internal Server Error",

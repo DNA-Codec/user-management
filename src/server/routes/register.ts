@@ -25,6 +25,8 @@ async function userExists(username: string) {
 export const endpoint = new Endpoint("post", "/v1/register").withBody(registerBodySchema).onCall(async (req, res) => {
     const { username, password } = req.body as z.infer<typeof registerBodySchema>;
 
+    console.log(`Registration attempt for username: ${username}`);
+
     // Check if user already exists
     try {
         if (await userExists(username)) return res.status(409).json({
@@ -48,6 +50,8 @@ export const endpoint = new Endpoint("post", "/v1/register").withBody(registerBo
         const newUser = new userModel({ username, passwordHash });
         await newUser.save();
 
+        console.log(`User registered successfully: ${username}`);
+
         return res.status(201).json({
             success: true,
             message: "User registered successfully",
@@ -57,6 +61,8 @@ export const endpoint = new Endpoint("post", "/v1/register").withBody(registerBo
             }
         });
     } catch (error) {
+        console.error(`Error occurred while registering user: ${username}`, error);
+
         return res.status(500).json({
             success: false,
             error: "Internal Server Error",
