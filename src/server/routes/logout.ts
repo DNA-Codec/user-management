@@ -5,8 +5,10 @@ import { Endpoint } from "../package";
 import { getSecureCookieOptions } from "../util/cookies";
 
 export const endpoint = new Endpoint("post", "/v1/logout", async (req, res) => {
-    const cookies = req.cookies;
-    const token = cookies["token"];
+    let token = req.cookies?.["token"];
+
+    const authHeader = req.headers.authorization;
+    if (authHeader?.startsWith('Bearer ')) token = authHeader.substring(7);
 
     if (!token) {
         res.status(401).json({ error: "NO_TOKEN", message: "No token provided" });
