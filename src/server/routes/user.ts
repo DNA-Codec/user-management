@@ -4,8 +4,10 @@ import { Endpoint } from "../package";
 import jwt from "jsonwebtoken";
 
 export const endpoint = new Endpoint("get", "/v1/me", async (req, res) => {
-    const cookies = req.cookies;
-    const token = cookies["token"];
+    let token = req.cookies?.["token"];
+
+    const authHeader = req.headers.authorization;
+    if (authHeader?.startsWith('Bearer ')) token = authHeader.substring(7);
 
     if (!token) {
         res.status(401).json({ error: "NO_TOKEN", message: "No token provided" });
